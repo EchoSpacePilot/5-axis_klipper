@@ -8,18 +8,26 @@ import stepper
 
 class CoreXYKinematics:
     def __init__(self, toolhead, config):
-        # Setup axis rails
+        # Setup axis steppers
+        stepper_bed = stepper.PrinterStepper(config.getsection('stepper_bed'),
+                                             units_in_radians=True)
+        stepper_arm= stepper.PrinterStepper(config.getsection('stepper_arm')units_in_radians=True)
         self.rails = [stepper.LookupMultiRail(config.getsection('stepper_' + n))
-                      for n in 'xyzuv']
+                      for n in 'xyz']
         for s in self.rails[1].get_steppers():
             self.rails[0].get_endstops()[0][0].add_stepper(s)
         for s in self.rails[0].get_steppers():
             self.rails[1].get_endstops()[0][0].add_stepper(s)
+        stepper_bed.setup_itersolve('polar_stepper_alloc', b'v')
         self.rails[0].setup_itersolve('corexy_stepper_alloc', b'+')
         self.rails[1].setup_itersolve('corexy_stepper_alloc', b'-')
         self.rails[2].setup_itersolve('cartesian_stepper_alloc', b'z')
         for s in self.get_steppers():
             s.set_trapq(toolhead.get_trapq())
+        
+        
+        
+        
         # Setup boundary checks
         max_velocity, max_accel = toolhead.get_max_velocity()
         self.max_z_velocity = config.getfloat(
