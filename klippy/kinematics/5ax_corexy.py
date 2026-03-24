@@ -18,13 +18,13 @@ class CoreXYKinematics:
             self.rails[0].get_endstops()[0][0].add_stepper(s)
         for s in self.rails[0].get_steppers():
             self.rails[1].get_endstops()[0][0].add_stepper(s)
-        stepper_bed.setup_itersolve('polar_stepper_alloc', b'v')
-        self.rails[0].setup_itersolve('corexy_stepper_alloc', b'+')
-        self.rails[1].setup_itersolve('corexy_stepper_alloc', b'-')
-        self.rails[2].setup_itersolve('cartesian_stepper_alloc', b'z')
+        stepper_arm.setup_itersolve('5axcorexy_stepper_alloc', b'u')
+        stepper_bed.setup_itersolve('5axcorexy_stepper_alloc', b'v')
+        self.rails[0].setup_itersolve('5axcorexy_stepper_alloc', b'+')
+        self.rails[1].setup_itersolve('5axcorexy_stepper_alloc', b'-')
+        self.rails[2].setup_itersolve('5axcorexy_stepper_alloc', b'z')
         for s in self.get_steppers():
             s.set_trapq(toolhead.get_trapq())
-        
         
         
         
