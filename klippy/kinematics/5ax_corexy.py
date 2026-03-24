@@ -11,7 +11,7 @@ class CoreXYKinematics:
         # Setup axis steppers
         stepper_bed = stepper.PrinterStepper(config.getsection('stepper_bed'),
                                              units_in_radians=True)
-        stepper_arm= stepper.PrinterStepper(config.getsection('stepper_arm')units_in_radians=True)
+        stepper_arm = stepper.PrinterStepper(config.getsection('stepper_arm')units_in_radians=True)
         self.rails = [stepper.LookupMultiRail(config.getsection('stepper_' + n))
                       for n in 'xyz']
         for s in self.rails[1].get_steppers():

@@ -61,6 +61,12 @@ five_ax_corexy_stepper_alloc(char type)
         sk->calc_position_cb = five_ax_corexy_stepper_plus_calc_position;
     } else if (type == '-') {
         sk->calc_position_cb = five_ax_corexy_stepper_minus_calc_position;
+    } else if (type == 'z') {
+        sk->calc_position_cb = five_ax_polar_stepper_angle_calc_position;
+        sk->post_cb = polar_stepper_angle_post_fixup;
+    } else if (type == 'u') {
+        sk->calc_position_cb = five_ax_polar_stepper_angle_calc_position;
+        sk->post_cb = polar_stepper_angle_post_fixup;
     } else if (type == 'v') {
         sk->calc_position_cb = five_ax_polar_stepper_angle_calc_position;
         sk->post_cb = polar_stepper_angle_post_fixup;
