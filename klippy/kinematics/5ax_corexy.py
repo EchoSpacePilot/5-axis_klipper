@@ -23,10 +23,9 @@ class CoreXYKinematics:
         self.rails[0].setup_itersolve('5axcorexy_stepper_alloc', b'+')
         self.rails[1].setup_itersolve('5axcorexy_stepper_alloc', b'-')
         self.rails[2].setup_itersolve('5axcorexy_stepper_alloc', b'z')
+        self.steppers = [stepper_bed] + [stepper_arm] + [s for rail in self.rails for s in rail.get_steppers()]
         for s in self.get_steppers():
             s.set_trapq(toolhead.get_trapq())
-        
-        
         
         # Setup boundary checks
         max_velocity, max_accel = toolhead.get_max_velocity()
@@ -38,8 +37,10 @@ class CoreXYKinematics:
         ranges = [r.get_range() for r in self.rails]
         self.axes_min = toolhead.Coord([r[0] for r in ranges])
         self.axes_max = toolhead.Coord([r[1] for r in ranges])
+
     def get_steppers(self):
-        return [s for rail in self.rails for s in rail.get_steppers()]
+        return list(self.steppers)
+    
     def calc_position(self, stepper_positions):
         pos = [stepper_positions[rail.get_name()] for rail in self.rails]
         return [0.5 * (pos[0] + pos[1]), 0.5 * (pos[0] - pos[1]), pos[2]]
