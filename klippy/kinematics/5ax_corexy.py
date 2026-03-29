@@ -95,7 +95,7 @@ class FiveAxCoreXYKinematics:
             return
         # Move with Z - update velocity and accel for slower Z axis
         self._check_endstops(move)
-        z_ratio = move.move_d / abs(move.axes_d[2])
+        z_ratio = move.move_d / abs(move.axes_d[2])                 # TODO: Check the following lines
         move.limit_speed(
             self.max_z_velocity * z_ratio, self.max_z_accel * z_ratio)
     
