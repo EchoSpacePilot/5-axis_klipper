@@ -29,9 +29,9 @@ class FiveAxCoreXYKinematics:
         
         # # Setup boundary checks
         # TODO: redo this section
-        max_velocity, max_accel = toolhead.get_max_velocity()
+        max_velocity, max_accel = toolhead.get_max_velocity() #
         self.max_z_velocity = config.getfloat(
-            'max_z_velocity', max_velocity, above=0., maxval=max_velocity)
+            'max_z_velocity', max_velocity, above=0., maxval=max_velocity) #
         self.max_z_accel = config.getfloat(
             'max_z_accel', max_accel, above=0., maxval=max_accel)
         self.limits = [(1.0, -1.0)] * 3
@@ -50,11 +50,11 @@ class FiveAxCoreXYKinematics:
     def set_position(self, newpos, homing_axes):
         for i, rail in enumerate(self.rails):
             rail.set_position(newpos)
-            if "xyz"[i] in homing_axes:
+            if "xyzuv"[i] in homing_axes:
                 self.limits[i] = rail.get_range()
     
     def clear_homing_state(self, clear_axes):
-        for axis, axis_name in enumerate("xyz"):
+        for axis, axis_name in enumerate("xyzuv"):
             if axis_name in clear_axes:
                 self.limits[axis] = (1.0, -1.0)
     
