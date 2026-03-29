@@ -64,7 +64,7 @@ class FiveAxCoreXYKinematics:
             # Determine movement
             position_min, position_max = rail.get_range()
             hi = rail.get_homing_info()
-            homepos = [None, None, None, None]
+            homepos = [None, None, None, None, None, None] #XYZUVE
             homepos[axis] = hi.position_endstop
             forcepos = list(homepos)
             if hi.positive_dir:
@@ -76,7 +76,7 @@ class FiveAxCoreXYKinematics:
     
     def _check_endstops(self, move):
         end_pos = move.end_pos
-        for i in (0, 1, 2):
+        for i in (0, 1, 2, 3, 4):
             if (move.axes_d[i]
                 and (end_pos[i] < self.limits[i][0]
                      or end_pos[i] > self.limits[i][1])):
@@ -100,7 +100,7 @@ class FiveAxCoreXYKinematics:
             self.max_z_velocity * z_ratio, self.max_z_accel * z_ratio)
     
     def get_status(self, eventtime):
-        axes = [a for a, (l, h) in zip("xyz", self.limits) if l <= h]
+        axes = [a for a, (l, h) in zip("xyzuv", self.limits) if l <= h]
         return {
             'homed_axes': "".join(axes),
             'axis_minimum': self.axes_min,
